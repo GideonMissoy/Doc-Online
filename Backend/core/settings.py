@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     # 'knox',
 
     'Accounts',
-    # 'api',
+    'Api'
     # 'events'
 ]
 

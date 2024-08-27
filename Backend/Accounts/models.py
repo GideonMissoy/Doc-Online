@@ -43,3 +43,25 @@ class OneTimePassword(models.Model):
 
     def __str__(self):
         return f"(self.user.first_name)-passcode"
+    
+class DoctorProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    specialty = models.CharField(max_length=255)
+    bio = models.TextField()
+    resume = models.FileField(upload_to='resumes/')
+    consultation_fee = models.DecimalField(max_digits=6, decimal_places=2)
+    is_verified = models.BooleanField(default=False)
+    available_times = models.JSONField()
+
+    def __str__(self):
+        return f"Dr. {self.user.first_name} {self.user.last_name} - {self.specialization}"
+
+
+class PatientProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    date_of_birth = models.DateField()
+    medical_history = models.TextField()
+    address = models.TextField()
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name} - Patient"
