@@ -7,7 +7,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import smart_str, smart_bytes, force_str
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
-from .models import User
+from .models import *
 from .utils import send_normal_email
 
 
@@ -139,3 +139,30 @@ class LogoutUserSerializer(serializers.Serializer):
             token.blacklist()
         except TokenError:
             return self.fail('bad_token')
+        
+class DoctorProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorProfile
+        fields = '__all__'
+
+    def create(self, validated_data):
+        resume = validated_data.pop('resume', None)
+        doctor_profile = DoctorProfile.objects.create(**validated_data)
+
+        if resume:
+            doctor_profile.resume = resume
+            doctor_profile.save()
+
+        return doctor_profile
+
+    def update(self, instance, validated_data):
+        resume = validated_data.pop('resume', None)
+        
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        if resume:
+            instance.resume = resume
+
+        instance.save()
+        return instance
