@@ -2,3 +2,4 @@
 sqlite3
 finalproject/
 Backend/.env
+Backend/db.sqlite3

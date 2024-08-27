@@ -3,12 +3,13 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from .serializers import UserRegisterSerializer, LoginSerializer, SetNewPasswordSerializer, PasswordResetRequestSerializer, LogoutUserSerializer
+from .serializers import UserRegisterSerializer, LoginSerializer, SetNewPasswordSerializer, PasswordResetRequestSerializer, LogoutUserSerializer, VerifyEmailSerializer
 from .utils import send_code_to_user
 from .models import User, OneTimePassword
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import smart_str, DjangoUnicodeDecodeError
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.contrib.auth import login
 
 
 class RegisterUserView(GenericAPIView):
@@ -28,6 +29,7 @@ class RegisterUserView(GenericAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class VerifyUserEmail(GenericAPIView):
+    serializer_class=VerifyEmailSerializer
     def post(self, request):
         otpcode=request.data.get('otp')
         print(otpcode)
@@ -51,6 +53,10 @@ class VerifyUserEmail(GenericAPIView):
 class LoginUserView(GenericAPIView):
     serializer_class=LoginSerializer
     def post(self, request):
+        if not request.user.is_authenticated:
+            print("NOTE: This User is not AUthenticated")
+        else:
+            print("The User is authenticated")
         serializer=self.serializer_class(data=request.data, context={'request':request})
         serializer.is_valid(raise_exception=True)
 
