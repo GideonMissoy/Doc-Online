@@ -61,7 +61,6 @@ class EditEventView(UpdateAPIView):
 
 class RetrieveEventView(RetrieveAPIView):
     serializer_class = EventSerializer
-    if(request.u)
     def get(self, request, *args, **kwargs) -> Response:
         try:
             event = Event.objects.all()
