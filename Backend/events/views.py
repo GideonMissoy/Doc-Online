@@ -1,10 +1,8 @@
 from uuid import UUID
-#from knox.auth import TokenAuthentication
 from rest_framework import status
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import login
-# from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView, UpdateAPIView, RetrieveAPIView
 from django.db import transaction
@@ -36,13 +34,9 @@ class CreateEventView(GenericAPIView):
         response.save()
         return Response({"message": "Event successfully created", "data": serializer.data}, status=status.HTTP_201_CREATED)
 
-
 class EditEventView(UpdateAPIView):
-    # authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
     serializer_class = EventSerializer
 
-    @transaction.atomic
     def patch(self, request, event_id: UUID) -> Response:
         """Edit an event."""
         if not request.user.is_authenticated:
@@ -67,6 +61,7 @@ class EditEventView(UpdateAPIView):
 
 class RetrieveEventView(RetrieveAPIView):
     serializer_class = EventSerializer
+    if(request.u)
     def get(self, request, *args, **kwargs) -> Response:
         try:
             event = Event.objects.all()
@@ -78,9 +73,8 @@ class RetrieveEventView(RetrieveAPIView):
         data = get_event_info(event)
         return Response(data, status=status.HTTP_200_OK)
 
-
+        
 class JoinEventView(UpdateAPIView):
-    # authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     serializer_class = EventSerializer
 

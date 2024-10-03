@@ -167,3 +167,12 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+
+class VerifyEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    otp = serializers.CharField(max_length=6)
+
+    def validate(self, data):
+        # Add custom validation logic here
+        return data

@@ -39,7 +39,7 @@ function Login() {
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('access', JSON.stringify(response.access_token));
         localStorage.setItem('refresh', JSON.stringify(response.refresh_token));
-        navigate('/my-projects');
+        navigate('/home-page');
         toast.success('Login Successful');
       }
     }
